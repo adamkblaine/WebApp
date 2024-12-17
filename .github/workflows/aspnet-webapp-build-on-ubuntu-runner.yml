@@ -1,15 +1,20 @@
 name: ASP.NET Web App Build on Ubuntu Runner
+
 on:
   push:
     paths:
       - '.github/workflows/aspnet-webapp-build-ubuntu-runner.yml'
       - 'src/dotnet/WebApp/**'
   workflow_dispatch:
-  jobs:
+
+jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src/dotnet/WebApp
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v4.1.7
 
       - name: Set up .NET Core
@@ -17,8 +22,8 @@ on:
         with:
           dotnet-version: '8.x'
 
-      - name: Build code
+      - name: Build Code
         run: dotnet build --configuration Release
 
-      - name: Publish code
+      - name: Publish Code
         run: dotnet publish -c Release --property:PublishDir="${{runner.temp}}/webapp"
